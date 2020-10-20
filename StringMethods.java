@@ -4,7 +4,12 @@ class StringMethods {
     // 例えば、s の先頭が p なら1文字目なので 1 が結果
     // 現れないなら -1
     int find(String s, String p) {
-        return -1;
+        int i = s.indexOf(p);
+        if(i < 0){
+            return i;
+        }else{
+            return i + 1;
+        }
     }
     // s の中に p がいくつ現れるか（重複OK）
     // 例えば、"HoHoHo Ho" に "HoHo" は重複ありで 2度
@@ -34,15 +39,18 @@ class StringMethods {
         // テスト用のコードはこの main に書いて
         // java StringMethods とすれば実行できる
         // 適宜自分でテストを書いて自分のコードの動作確認をすること
-
         StringMethods sm = new StringMethods();
+        System.out.println(sm.find("Hello Java World", "Hello"));
+        System.out.println(sm.find("Hello Java World", "Java"));
+        System.out.println(sm.find("Hello Java World", "Python"));
+
         
-        System.out.println(sm.find("Hello World", "or"));
-        System.out.println(sm.count("HoHoHo Ho", "HoHo"));
-        System.out.println(sm.countNOV("HoHoHo Ho", "HoHo"));
-        System.out.println(sm.between("Hello World", 'e', 'o'));
-        System.out.println(sm.concat(new String [] { "Hello", "World" }));
-        System.out.println(sm.reverse("Hello World"));
+        // System.out.println(sm.find("Hello World", "or"));
+        // System.out.println(sm.count("HoHoHo Ho", "HoHo"));
+        // System.out.println(sm.countNOV("HoHoHo Ho", "HoHo"));
+        // System.out.println(sm.between("Hello World", 'e', 'o'));
+        // System.out.println(sm.concat(new String [] { "Hello", "World" }));
+        // System.out.println(sm.reverse("Hello World"));
         
     }
 }
