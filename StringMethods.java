@@ -6,7 +6,7 @@ class StringMethods {
     int find(String s, String p) {
         int i = s.indexOf(p);
         if(i < 0){
-            return i;
+            return -1;
         }else{
             return i + 1;
         }
@@ -19,7 +19,18 @@ class StringMethods {
     // s の中に p がいくつ現れるか（重複なし）
     // 例えば、"HoHoHo Ho" に "HoHo" は重複無しで 1度
     int countNOV(String s, String p) {
-        return 0;
+        int count = 0;
+        int subString = 0;
+        int i;
+        i = s.indexOf(p,subString);
+        while(i != -1){
+            i = s.indexOf(p,subString);
+            if(i != -1){
+                count++;
+            }
+            subString = i + p.length();
+        }
+        return count;
     }
     // s の中の、文字 b と文字 e の間の部分文字列を返す
     // b は s 中の最左、e は b 以降の最左をとる
@@ -40,9 +51,9 @@ class StringMethods {
         // java StringMethods とすれば実行できる
         // 適宜自分でテストを書いて自分のコードの動作確認をすること
         StringMethods sm = new StringMethods();
-        System.out.println(sm.find("Hello Java World", "Hello"));
-        System.out.println(sm.find("Hello Java World", "Java"));
-        System.out.println(sm.find("Hello Java World", "Python"));
+        System.out.println(sm.countNOV("hohoho ho", "hoho"));
+        // System.out.println(sm.count("Hello Java World", "Java"));
+        // System.out.println(sm.count("Hello Java World", "Python"));
 
         
         // System.out.println(sm.find("Hello World", "or"));
