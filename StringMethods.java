@@ -14,7 +14,19 @@ class StringMethods {
     // s の中に p がいくつ現れるか（重複OK）
     // 例えば、"HoHoHo Ho" に "HoHo" は重複ありで 2度
     int count(String s, String p) {
-        return 0;
+        int count = 0;
+        int subString = 0;
+        int i;
+        i = s.indexOf(p,subString);
+        while(i != -1){
+            i = s.indexOf(p,subString);
+            if(i != -1){
+                count++;
+            }
+            subString = i + 1;
+        }
+
+        return count;
     }
     // s の中に p がいくつ現れるか（重複なし）
     // 例えば、"HoHoHo Ho" に "HoHo" は重複無しで 1度
@@ -40,10 +52,10 @@ class StringMethods {
         int right;
         left = s.indexOf(b);
         right = s.indexOf(e) + 1;
-        if(right > left){
+        if(right > left && right > -1 && left > -1){
             return s.substring(left,right);
         }else{
-            return " ";
+            return "";
         }
     }
     // 配列 ss 内の全文字列を空白 ' ' でつないだ文字列を返す
@@ -52,7 +64,7 @@ class StringMethods {
         for(int i=0;i<ss.length;i++){
             connect =  connect + ss[i] + ' ';
         }
-        return connect;
+        return connect.substring(0,connect.length()-1);
     }
     // 与えられた文字列をひっくり返した文字列を返す
     String reverse(String s) {
@@ -70,12 +82,12 @@ class StringMethods {
         // System.out.println(sm.count("Hello Java World", "Python"));
 
         
-        // System.out.println(sm.find("Hello World", "or"));
-        // System.out.println(sm.count("HoHoHo Ho", "HoHo"));
-        // System.out.println(sm.countNOV("HoHoHo Ho", "HoHo"));
-        // System.out.println(sm.between("Hello World", 'e', 'o'));
-        // System.out.println(sm.concat(new String [] { "Hello", "World" }));
-        // System.out.println(sm.reverse("Hello World"));
+        System.out.println(sm.find("Hello World", "or"));
+        System.out.println(sm.count("HoHoHo Ho", "HoHo"));
+        System.out.println(sm.countNOV("HoHoHo Ho", "HoHo"));
+        System.out.println(sm.between("Hello World", 'e', 'o'));
+        System.out.println(sm.concat(new String [] { "Hello", "World" }));
+        System.out.println(sm.reverse("Hello World"));
         
     }
 }
