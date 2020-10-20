@@ -44,14 +44,16 @@ class StringMethods {
     }
     // 与えられた文字列をひっくり返した文字列を返す
     String reverse(String s) {
-        return "";
+        StringBuilder sb = new StringBuilder(s);
+        s = sb.reverse().toString();
+        return s;
     }
     public static void main(String [] args) {
         // テスト用のコードはこの main に書いて
         // java StringMethods とすれば実行できる
         // 適宜自分でテストを書いて自分のコードの動作確認をすること
         StringMethods sm = new StringMethods();
-        System.out.println(sm.countNOV("hohoho ho", "hoho"));
+        // System.out.println(sm.countNOV("hohoho ho", "hoho"));
         // System.out.println(sm.count("Hello Java World", "Java"));
         // System.out.println(sm.count("Hello Java World", "Python"));
 
@@ -61,7 +63,7 @@ class StringMethods {
         // System.out.println(sm.countNOV("HoHoHo Ho", "HoHo"));
         // System.out.println(sm.between("Hello World", 'e', 'o'));
         // System.out.println(sm.concat(new String [] { "Hello", "World" }));
-        // System.out.println(sm.reverse("Hello World"));
+        System.out.println(sm.reverse("Hello World"));
         
     }
 }
