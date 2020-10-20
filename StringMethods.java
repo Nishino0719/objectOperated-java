@@ -36,7 +36,15 @@ class StringMethods {
     // b は s 中の最左、e は b 以降の最左をとる
     // 対象となる b や e が無いなら空文字列を返す
     String between(String s, char b, char e) {
-        return "";
+        int left;
+        int right;
+        left = s.indexOf(b);
+        right = s.indexOf(e) + 1;
+        if(right > left){
+            return s.substring(left,right);
+        }else{
+            return " ";
+        }
     }
     // 配列 ss 内の全文字列を空白 ' ' でつないだ文字列を返す
     String concat(String [] ss) {
@@ -66,7 +74,7 @@ class StringMethods {
         // System.out.println(sm.count("HoHoHo Ho", "HoHo"));
         // System.out.println(sm.countNOV("HoHoHo Ho", "HoHo"));
         // System.out.println(sm.between("Hello World", 'e', 'o'));
-        System.out.println(sm.concat(new String [] { "Hello", "World" }));
+        // System.out.println(sm.concat(new String [] { "Hello", "World" }));
         // System.out.println(sm.reverse("Hello World"));
         
     }
