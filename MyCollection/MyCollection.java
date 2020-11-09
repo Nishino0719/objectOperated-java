@@ -67,16 +67,51 @@ class MyStack<E> extends MyCollection<E> {
         // 「次のセル」に記録されている古い top を復元。
 
         /* fill here */ 
+        E x = top.getVal();
+        top = top.getNext();
+        size--;
+        return x;
     }
     E peek() {
         // top セルの値を見れば良い
         /* fill here */ 
+        return top.getVal();
+
     }
 }
 
 // キューの実装
-class MyQueue<E> /* fill here */ {
+class MyQueue<E> extends MyCollection<E> {
     /* fill here */
+    MyCell<E> top,bot;
+    MyQueue(){
+        super("MyQueue");
+        top = null;
+        bot = null;
+    }
+    void add(E x) {
+        MyCell c = new MyCell<E>(x, null);
+        if(size == 0) {
+            top = c;
+            bot = c;
+        }else{
+            top.setNext(c);
+            top = c;
+        }
+        size++;
+    }
+    E extract() {
+        /* fill here */ 
+        E x = bot.getVal();
+        bot = bot.getNext();
+        size--;
+        if(size == 0) top = null;
+        return x;
+    }
+    E peek() {
+        /* fill here */ 
+        return bot.getVal();
+    }
 }
 
 
