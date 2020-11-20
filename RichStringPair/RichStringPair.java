@@ -50,28 +50,29 @@ class RichStringPair extends StringPair
 
     /* fill here */
     public boolean hasNext(){
-        // if(compareTo(this) == 1){
-        //     return true; 
-        // }else if(compareTo(this) == 0){
-        //     String temp;
-        //     temp = this.fst;
-        //     this.fst = this.snd;
-        //     this.snd = temp;
-        //     if(compareTo(this) == 1){
-        //         temp = this.fst;
-        //         this.fst = this.snd;
-        //         this.snd = temp;
-        //         return true; 
-        //     }
-        //     return false;
-        // }else{
-        //     return false;
-        // }
+        if(compareTo(this) == 1){
+            return true; 
+        }else if(compareTo(this) == 0){
+            String temp;
+            temp = this.fst;
+            this.fst = this.snd;
+            this.snd = temp;
+            if(compareTo(this) == 1){
+                temp = this.fst;
+                this.fst = this.snd;
+                this.snd = temp;
+                return true; 
+            }
+            return false;
+        }else{
+            return false;
+        }
         return true;
     }
     public String next(){
         String ret = toString();
-        return ret;
+
+        return this;
     }
     public Iterator<String> iterator(){
         return this;
