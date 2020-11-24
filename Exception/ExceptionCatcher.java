@@ -20,7 +20,22 @@ class ExceptionCatcher {
     //   4 : ArrayIndexOutOfBoundsException 
     int catcher(ExceptionThrower et) {
         /* fill here */
+        try {
             et.run();
+            return 0;
+        } catch (NullPointerException e) {
+            //TODO: handle exception
+            return 1;
+        } catch (NegativeArraySizeException e) {
+            //TODO: handle exception
+            return 2;
+        } catch (ArithmeticException e) {
+            //TODO: handle exception
+            return 3;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            //TODO: handle exception
+            return 4;
+        }
         /* fill here */
     }
 }
