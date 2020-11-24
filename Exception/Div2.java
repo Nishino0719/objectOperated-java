@@ -11,7 +11,12 @@ class Div2 {
     // 正の偶数を受け取って、その 1/2 を返すメソッド
     // 正の数でなければ NonPositiveException を投げ、
     // 正だけど偶数でなければ OddNumberException を投げる
-    int div2(int x) /* fill here */ 
+    int div2(int x) throws NonPositiveException,OddNumberException {
+        if(x <= 0) throw new NonPositiveException();
+        if(x % 2 == 1) throw new OddNumberException();
+        return x / 2;
+    } /* fill here */ 
+
 }
 
 // Div2 のチェック
