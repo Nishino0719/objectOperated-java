@@ -29,10 +29,25 @@ class TextMazeWithWarp extends TextMaze {
 
         // TODO: ここらへんをうめよ
         // 迷路盤面上を走査し、ワープ出口の情報を warpOuts に集める
-        for(...) {
-            for(...) {
-                if(...) {
-                    warpOuts.put(..., ...);
+        for(int i=0;i<h;i++) {
+            for(int j=0;j<w;j++) {
+                Character temp = field[i][j];
+                temp = field[i][j];
+
+                if(temp.equals('a')) {
+                    warpOuts.put('a',new IntPair(i,j));
+                }
+                if(temp.equals('b')) {
+                    warpOuts.put('b',new IntPair(i,j));
+                }
+                if(temp.equals('c')) {
+                    warpOuts.put('c',new IntPair(i,j));
+                }
+                if(temp.equals('d')) {
+                    warpOuts.put('d',new IntPair(i,j));
+                }
+                if(temp.equals('e')) {
+                    warpOuts.put('e',new IntPair(i,j));
                 }
             }
         }
@@ -45,8 +60,22 @@ class TextMazeWithWarp extends TextMaze {
     public List<IntPair> getNeighbors(IntPair p) {
         // TODO: ここらへんを埋めよ
         // 「p がワープ入口であるならば、p をワープ出口の座標に変更しておく」をする
-        if(...) {
-            p = ...
+        Character temp = field[p.i][p.j];
+        temp = field[p.i][p.j];
+        if(temp.equals('A')) {
+            p = warpOuts.get('a');
+        }
+        if(temp.equals('B')) {
+            p = warpOuts.get('b');
+        }
+        if(temp.equals('C')) {
+            p = warpOuts.get('c');
+        }
+        if(temp.equals('D')) {
+            p = warpOuts.get('d');
+        }
+        if(temp.equals('E')) {
+            p = warpOuts.get('e');
         }
 
         // あとの処理は親クラスの処理と同じ
