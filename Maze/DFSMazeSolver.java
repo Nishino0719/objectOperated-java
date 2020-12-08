@@ -7,7 +7,7 @@ public class DFSMazeSolver {
         Stack<Pos> stack = new Stack<Pos>();
         // スタックに入れたことのある位置の集まり
         HashSet<Pos> seen = new HashSet<Pos>();
-        Pos st = m.getStart(); // スタート位置
+        Pos st = m.getStart(); // スタート位置 
         stack.push(m.getStart()); // スタート位置をスタックに追加
         seen.add(m.getStart()); // スタート位置をスタックに入れたと記憶
         while(stack.size() > 0) { // スタックに残りがある限り回る

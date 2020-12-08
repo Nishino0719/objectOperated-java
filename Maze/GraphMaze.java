@@ -68,6 +68,22 @@ class GraphMaze implements Maze<String> {
     }
 
     // TODO: 必要なメソッドを適切に実装せよ
+    public String getStart(){
+        return startNode;
+    }
+
+    public List<String> getNeighbors(String p){
+        cnt++;
+        ArrayList<String> ps = new ArrayList<String>();    
+        for(String str : neighbors.get(p)){
+            ps.add(str);
+        }
+        return ps;
+    }
+
+    public boolean isGoal(String p){
+        return p.equals(goalNode);        
+    }
     
     /**
      * スタートからゴールに至る位置の並びを受け取り，それをそのまま出力する．
