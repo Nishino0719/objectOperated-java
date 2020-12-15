@@ -9,9 +9,10 @@ interface Adapter<E> {
      * 新しい、空のインスタンスを準備するメソッド．
      */
     void init();
-
     // TODO: 必要なだけメソッドを追加する
-    
+    void addValue(E value);
+    int size();
+    E getValue();
 }
 
 /**
@@ -33,7 +34,32 @@ class MazeSolver {
 
         // TODO: あとは BFSMazeSolver.solve と DFSMazeSolver.solve のコードの続きを、
         // その差異の部分を Adapter<Pos> のメソッド呼び出しに置き換えつつ記述
-
+        HashSet<Pos> seen = new HashSet<Pos>();
+        Pos st = m.getStart();
+        collection.addValue(m.getStart());
+        seen.add(m.getStart());
+        while(collection.size() > 0){
+            Pos p = collection.getValue();
+            if(m.isGoal(p)) { // ゴールに辿り着いたか？
+                // ゴールに着いたら、そこに至る経路を逆向きにたどる
+                ArrayList<Pos> ps = new ArrayList<Pos>();
+                for(Pos c = p; c != null; c = prev.get(c)) {
+                    ps.add(c);
+                }
+                Collections.reverse(ps); // 経路を正しい向きに直す
+                m.printAnswer(ps); // 答えを出力
+                return;
+            }
+            List<Pos> ns = m.getNeighbors(p);
+            for(Pos n: ns){
+                if(!seen.contains(n)){
+                    collection.addValue(n);
+                    seen.add(n);
+                    prev.put(n,p);
+                }
+            }
+        }
+        System.out.println("impossible");
     }
 }
 
@@ -45,9 +71,9 @@ class MazeSolver {
  * 差異吸収のためのインターフェース Adapter<E> を実装する．
  * つまり，各メソッドの中身は，DFSMazeSolver の solve のコードの一部である．
  */
-class StackAdapter<E> implements Adapter<E> {
+class MyStack<E> implements Adapter<E> {
     Stack<E> st;
-    StackAdapter() {
+    MyStack() {
         st = null; // まだ準備できてない
     }
     public void init() {
@@ -55,6 +81,17 @@ class StackAdapter<E> implements Adapter<E> {
     }
 
     // 必要なだけメソッドを実装
+    public void addValue(E value){
+        st.push(value);
+    }
+
+    public int size(){
+        return st.size();
+    }
+
+    public E getValue(){
+        return st.pop();
+    }
     
 }
 
@@ -63,9 +100,9 @@ class StackAdapter<E> implements Adapter<E> {
  * 差異吸収のためのインターフェース Adapter<E> を実装する．
  * つまり，各メソッドの中身は，BFSMazeSolver の solve のコードの一部である．
  */
-class QueueAdapter<E> implements Adapter<E> {
+class MyQueue<E> implements Adapter<E> {
     LinkedList<E> que;
-    QueueAdapter() {
+    MyQueue() {
         que = null; // 準備できてない状態
     }
     public void init() {
@@ -73,5 +110,16 @@ class QueueAdapter<E> implements Adapter<E> {
     }
 
     // 必要なだけメソッドを実装
+    public void addValue(E value){
+        que.add(value);
+    }
+
+    public int size(){
+        return que.size();
+    }
+
+    public E getValue(){
+        return que.remove();
+    }
     
 }

@@ -1,4 +1,5 @@
-
+import java.util.*;
+import java.io.*;
 /**
  * コマンドライン引数に指定したテキストファイルから迷路を読み込み、脱出経路を表示する{@code main} をもつ．
  */
