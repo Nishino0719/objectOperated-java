@@ -96,7 +96,10 @@ class Matrix {
         if(mat == null || sizeMismatch(mat)) return null;
         // あとは単純な加算
         Matrix ret = new Matrix(m, n);
+        //poop
+        System.out.println("this is" + m  + "x" +  n + "行列");
         System.out.println("this is sub methods");
+
         for(int i = 0; i < m; i++) {
             for(int j = 0; j < n; j++) {
                 ret.vals[i][j] = this.vals[i][j] - mat.vals[i][j];
@@ -112,14 +115,17 @@ class Matrix {
      */
     Matrix mul(Matrix mat) {
         // 計算できないときには null を返す. 
-        if(mat == null || sizeMismatch(mat)) return null;
+        if(mat == null || n != mat.m ) return null;
         // あとは単純な加算
         //:poop:
         Matrix ret = new Matrix(m, n);
-        System.out.println("this is MUL methods");
         for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                ret.vals[i][j] = this.vals[i][j] - mat.vals[i][j];
+            for(int k=0; k< mat.n ;k++){
+                double c = 0;
+                for(int j = 0; j < n; j++) {
+                    c +=  this.vals[i][j] * mat.vals[j][k];
+                }
+                ret.vals[i][k] = c;
             }
         }
         return ret;
@@ -422,6 +428,6 @@ class MatrixCalc {
         // 電卓の生成と実行
         Calculator<Matrix> c = new Calculator<Matrix>(br, comms);
         // 初期値は 2x2 のゼロ行列
-        c.run(new Matrix(2,2));
+        c.run(new Matrix(3,3));
     }
 }
