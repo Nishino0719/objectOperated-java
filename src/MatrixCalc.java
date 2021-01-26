@@ -86,6 +86,45 @@ class Matrix {
         return ret;
     }
     /**
+     * 与えられた行列と自身の減算結果の行列を新たに生成して返す. 
+     * @param mat 減算する行列
+     * @return 行列減算 {@code this} + {@code mat} の結果となる行列. 
+     *         サイズ違いなどで計算不可能な場合には {@code null}. 
+     */
+    Matrix sub(Matrix mat) {
+        // 計算できないときには null を返す. 
+        if(mat == null || sizeMismatch(mat)) return null;
+        // あとは単純な加算
+        Matrix ret = new Matrix(m, n);
+        System.out.println("this is sub methods");
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                ret.vals[i][j] = this.vals[i][j] - mat.vals[i][j];
+            }
+        }
+        return ret;
+    }
+    /**
+     * 与えられた行列と自身の乗算結果の行列を新たに生成して返す. 
+     * @param mat 乗算する行列
+     * @return 行列乗算 {@code this} + {@code mat} の結果となる行列. 
+     *         サイズ違いなどで計算不可能な場合には {@code null}. 
+     */
+    Matrix mul(Matrix mat) {
+        // 計算できないときには null を返す. 
+        if(mat == null || sizeMismatch(mat)) return null;
+        // あとは単純な加算
+        //:poop:
+        Matrix ret = new Matrix(m, n);
+        System.out.println("this is MUL methods");
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                ret.vals[i][j] = this.vals[i][j] - mat.vals[i][j];
+            }
+        }
+        return ret;
+    }
+    /**
      * 与えられたサイズの単位行列を新たに生成して返す. 
      * @param n 生成する行列のサイズ
      * @return {@code n}×{@code} の単位行列
@@ -267,6 +306,54 @@ class MatrixAdd extends CommandWithMemory<Matrix> {
         return null;
     }
 }
+class MatrixSub extends CommandWithMemory<Matrix> {
+    /**
+     * 変数の情報を保持する {@code Memory} オブジェクトを受け取るコンストラクタ. 
+     * @param mem 変数の情報を保持するオブジェクト. 
+     */
+    MatrixSub(Memory<Matrix> mem) {
+        super(mem); // 親のコンストラクタをそのまま呼ぶだけ
+    }
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
+        // 行列の値を直接書く場合
+        if(block.size() > 1 && ts.length == 1 && "sub".equals(ts[0])){
+            // 実際の読み込みと加算は Matrix クラスに任せる
+            Matrix v = Matrix.read(block);
+            return res.sub(v);
+        }
+        // 行列を保存した変数が指定された場合
+        if(block.size() == 1 && ts.length == 2 && "sub".equals(ts[0])) {
+            // 変数の値をメモリから取得
+            Matrix v = mem.get(ts[1]);
+            return res.sub(v); // 実際の加算は Matrix クラス任せ
+        }
+        return null;
+    }
+}
+class MatrixMul extends CommandWithMemory<Matrix> {
+    /**
+     * 変数の情報を保持する {@code Memory} オブジェクトを受け取るコンストラクタ. 
+     * @param mem 変数の情報を保持するオブジェクト. 
+     */
+    MatrixMul(Memory<Matrix> mem) {
+        super(mem); // 親のコンストラクタをそのまま呼ぶだけ
+    }
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
+        // 行列の値を直接書く場合
+        if(block.size() > 1 && ts.length == 1 && "mul".equals(ts[0])){
+            // 実際の読み込みと加算は Matrix クラスに任せる
+            Matrix v = Matrix.read(block);
+            return res.mul(v);
+        }
+        // 行列を保存した変数が指定された場合
+        if(block.size() == 1 && ts.length == 2 && "mul".equals(ts[0])) {
+            // 変数の値をメモリから取得
+            Matrix v = mem.get(ts[1]);
+            return res.mul(v); // 実際の加算は Matrix クラス任せ
+        }
+        return null;
+    }
+}
 
 /**
  * 行列電卓を作成して動作させるクラス. 
@@ -326,6 +413,8 @@ class MatrixCalc {
         comms.add(new IdentityMatrix());
         comms.add(new ZeroMatrix());
         comms.add(new MatrixAdd(mem));
+        comms.add(new MatrixSub(mem));
+        comms.add(new MatrixMul(mem));
         comms.add(new LoadStore<Matrix>(mem));
         comms.add(mem);
         // 入力は標準入力から
