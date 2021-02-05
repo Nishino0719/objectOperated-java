@@ -96,9 +96,6 @@ class Matrix {
         if(mat == null || sizeMismatch(mat)) return null;
         // あとは単純な加算
         Matrix ret = new Matrix(m, n);
-        //poop
-        System.out.println("this is" + m  + "x" +  n + "行列");
-        System.out.println("this is sub methods");
 
         for(int i = 0; i < m; i++) {
             for(int j = 0; j < n; j++) {
