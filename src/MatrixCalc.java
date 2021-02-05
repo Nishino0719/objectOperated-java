@@ -143,6 +143,21 @@ class Matrix {
         return ret;
     }
     /**
+     * 与えられたサイズの行列に任意の数字を新たに生成した行列を返す. 
+     * @param n 生成する行列のサイズ
+     * @return {@code n}×{@code} の任意の行列
+     */
+    public static Matrix anyn(int n,int a) {
+        Matrix ret = new Matrix(n, n); // これは nxn のゼロ行列
+        for(int i = 0;i<n;i++){
+            for(int j= 0; j<n;j++){
+                ret.vals[i][j] = a;
+            }
+        }
+        return ret;
+    }
+
+    /**
      * 「ブロック」から与えられたサイズの単位行列を新たに生成して返す. 
      * @param block 電卓から受け取る「ブロック」.
      * @return {@code n}×{@code} の単位行列. 行のサイズの食い違いなどで生成に失敗したら {@code null}
@@ -241,6 +256,35 @@ class IdentityMatrix implements Command<Matrix> {
             // 単位行列の実際の生成は Matrix クラスにまかせる
             return Matrix.eye(Integer.parseInt(ts[1]));
         }
+        return null;
+    }
+}
+/**
+ * 任意の整数が入った行列を現在の「結果」にする「コマンド」. 
+ * {@code anyn} の後に整数値が並ぶ 1行の「ブロック」を受け付け, その整数値のサイズの単位行列を「結果」として返す. 
+ * 例えば, 次のような「ブロック」を入力として受け付ける（2x2 の単位行列になる）. 
+ * <p><blockquote><pre>{@code
+ * anyn 2 10
+ * }</pre></blockquote><p>
+ */
+class anynMatrix implements Command<Matrix> {
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix r) {
+        try {
+            if(block.size() == 1){
+                if(ts.length == 3 && "anyn".equals(ts[0])) {
+                    // 単位行列の実際の生成は Matrix クラスにまかせる
+                    if(Integer.parseInt(ts[1]) <= 1){
+                        System.out.println(Integer.parseInt(ts[1]));
+                        return null;
+                    }else{
+                        return Matrix.anyn(Integer.parseInt(ts[1]),Integer.parseInt(ts[2]));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
         return null;
     }
 }
@@ -421,6 +465,7 @@ class MatrixCalc {
         comms.add(new MatrixAdd(mem));
         comms.add(new MatrixSub(mem));
         comms.add(new MatrixMul(mem));
+        comms.add(new anynMatrix());
         comms.add(new LoadStore<Matrix>(mem));
         comms.add(mem);
         // 入力は標準入力から
@@ -428,6 +473,6 @@ class MatrixCalc {
         // 電卓の生成と実行
         Calculator<Matrix> c = new Calculator<Matrix>(br, comms);
         // 初期値は 2x2 のゼロ行列
-        c.run(new Matrix(3,3));
+        c.run(new Matrix(2,2));
     }
 }
