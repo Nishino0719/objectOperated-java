@@ -144,6 +144,21 @@ class Matrix {
         return ret;
     }
     /**
+     * 現在の行列を転置行列を新たに生成して返す. 
+     * @param mat 乗算する行列
+     * @return 行列乗算 {@code this} + {@code a} の結果となる行列. 
+     *         サイズ違いなどで計算不可能な場合には {@code null}. 
+     */
+    Matrix trans() {
+        Matrix ret = new Matrix(n, m);
+        for(int i = 0; i < m; i++) {
+            for(int j=0; j< n ;j++){
+                ret.vals[j][i] = this.vals[i][j];
+            }
+        }
+        return ret;
+    }
+    /**
      * 与えられたサイズの単位行列を新たに生成して返す. 
      * @param n 生成する行列のサイズ
      * @return {@code n}×{@code} の単位行列
@@ -510,6 +525,20 @@ class MatrixAnyMul implements Command<Matrix> {
         return null;
     }
 }
+//現在の行列の転置行列を求める
+class MatrixTrans implements Command<Matrix> {
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
+        try {
+            if(block.size() == 1 && ts.length == 1 && "trans".equals(ts[0])){
+                return res.trans();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+        return null;
+    }
+}
 
 /**
  * 行列電卓を作成して動作させるクラス. 
@@ -582,11 +611,13 @@ class MatrixCalc {
         commands.add("anyn");
         comms.add(new MatrixAnyMul());
         commands.add("anymul");
+        comms.add(new MatrixTrans());
+        commands.add("trans");
         comms.add(new LoadStore<Matrix>(mem));
         commands.add("store");
+        comms.add(new CommandsShow(commands));
         commands.add("show");
         comms.add(mem);
-        comms.add(new CommandsShow(commands));
         // 入力は標準入力から
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         // 電卓の生成と実行
