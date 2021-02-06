@@ -144,6 +144,72 @@ class Matrix {
         return ret;
     }
     /**
+     * 与えられた整数と自身の除算結果の行列を新たに生成して返す. 
+     * @param mat 除算する行列
+     * @return 行列除算 {@code this} + {@code a} の結果となる行列. 
+     *         サイズ違いなどで計算不可能な場合には {@code null}. 
+     */
+    Matrix div(Matrix mat) {
+        Matrix invMat = new Matrix(m, n);
+        Matrix ret = new Matrix(m, n);
+        //まずは逆行列を求める.
+        invMat = invMat.inv(mat);
+        if(ret.m == m && ret.n == n){
+            ret = invMat.mul(this);
+            return ret;
+        }else{
+            System.out.println(m + "×" + n+ "行列と"+ret.m+"×"+ret.n+"行列は乗算できません。");
+            return null;
+        }
+    }
+
+    /**
+     * 与えられた行列の逆行列の行列を結果として返す. 
+     * @param mat 逆行列する行列
+     * @return 逆行列行列となる行列. 
+     *         サイズ違いなどで計算不可能な場合には {@code null}. 
+     */
+    Matrix inv(Matrix mat) {
+        if(mat.m != mat.n){
+            System.out.println("入力された行列は正方行列でないので逆行列を持ちません.");
+            return null;
+        }
+        if(mat.n != m){
+            System.out.println(m +"×"+n+"行列と"+mat.m+"×"+mat.n+"行列は除算することができません.");
+            return null;
+        }
+        //掃き出し法を用いる.
+        Matrix inv = new Matrix(mat.m, mat.n);
+        //単位行列の作成
+        for(int i=0;i<mat.m;i++){
+            for(int j = 0;j< mat.n;j++){
+                if(i == j){
+                    inv.vals[i][j] = 1;
+                }else{
+                    inv.vals[i][j] = 0;
+                }
+            }
+        }
+        //掃き出し法
+        for(int i = 0;i < mat.m; i++){
+            double buf = 1 / mat.vals[i][i];
+            for(int j = 0;j < mat.n;j++){
+                mat.vals[i][j] *= buf;
+                inv.vals[i][j] *= buf;
+            }
+            for(int j = 0;j < mat.n;j++){
+                if(i != j){
+                    buf = mat.vals[j][i];
+                    for(int k=0;k < mat.n;k++){
+                    mat.vals[j][k] -= mat.vals[i][k] * buf;
+                    inv.vals[j][k] -= inv.vals[i][k] * buf;
+                    }
+                }
+           }
+        }
+        return inv;
+    }
+    /**
      * 現在の行列を転置行列を新たに生成して返す. 
      * @param mat 乗算する行列
      * @return 行列乗算 {@code this} + {@code a} の結果となる行列. 
@@ -525,6 +591,54 @@ class MatrixAnyMul implements Command<Matrix> {
         return null;
     }
 }
+class MatrixDiv extends CommandWithMemory<Matrix> {
+    /**
+     * 変数の情報を保持する {@code Memory} オブジェクトを受け取るコンストラクタ. 
+     * @param mem 変数の情報を保持するオブジェクト. 
+     */
+    MatrixDiv(Memory<Matrix> mem) {
+        super(mem); // 親のコンストラクタをそのまま呼ぶだけ
+    }
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
+        // 行列の値を直接書く場合
+        if(block.size() > 1 && ts.length == 1 && "div".equals(ts[0])){
+            // 実際の読み込みと加算は Matrix クラスに任せる
+            Matrix v = Matrix.read(block);
+            return res.div(v);
+        }
+        // 行列を保存した変数が指定された場合
+        if(block.size() == 1 && ts.length == 2 && "div".equals(ts[0])) {
+            // 変数の値をメモリから取得
+            Matrix v = mem.get(ts[1]);
+            return res.div(v); // 実際の加算は Matrix クラス任せ
+        }
+        return null;
+    }
+}
+class MatrixInv extends CommandWithMemory<Matrix> {
+    /**
+     * 変数の情報を保持する {@code Memory} オブジェクトを受け取るコンストラクタ. 
+     * @param mem 変数の情報を保持するオブジェクト. 
+     */
+    MatrixInv(Memory<Matrix> mem) {
+        super(mem); // 親のコンストラクタをそのまま呼ぶだけ
+    }
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
+        // 行列の値を直接書く場合
+        if(block.size() > 1 && ts.length == 1 && "inv".equals(ts[0])){
+            // 実際の読み込みと加算は Matrix クラスに任せる
+            Matrix v = Matrix.read(block);
+            return res.inv(v);
+        }
+        // 行列を保存した変数が指定された場合
+        if(block.size() == 1 && ts.length == 2 && "inv".equals(ts[0])) {
+            // 変数の値をメモリから取得
+            Matrix v = mem.get(ts[1]);
+            return res.inv(v); // 実際の加算は Matrix クラス任せ
+        }
+        return null;
+    }
+}
 //現在の行列の転置行列を求める
 class MatrixTrans implements Command<Matrix> {
     public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
@@ -607,6 +721,10 @@ class MatrixCalc {
         commands.add("sub");
         comms.add(new MatrixMul(mem));
         commands.add("mul");
+        comms.add(new MatrixDiv(mem));
+        commands.add("div");
+        comms.add(new MatrixInv(mem));
+        commands.add("inv");
         comms.add(new anynMatrix());
         commands.add("anyn");
         comms.add(new MatrixAnyMul());
