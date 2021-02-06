@@ -188,7 +188,7 @@ class Matrix {
                     System.out.println(option +"コマンドは以下の通りです。");
                     System.out.println("________________________________");
                     try{
-                        File file = new File(option + ".txt");
+                        File file = new File("show/" + option + ".txt");
                         FileReader filereader = new FileReader(file);
                         int ch;
                         while((ch = filereader.read()) != -1){
