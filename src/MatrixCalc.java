@@ -128,6 +128,22 @@ class Matrix {
         return ret;
     }
     /**
+     * 与えられた整数と自身の乗算結果の行列を新たに生成して返す. 
+     * @param mat 乗算する行列
+     * @return 行列乗算 {@code this} + {@code a} の結果となる行列. 
+     *         サイズ違いなどで計算不可能な場合には {@code null}. 
+     */
+    Matrix anymul(int a) {
+        Matrix ret = new Matrix(m, n);
+
+        for(int i = 0; i < m; i++) {
+            for(int j=0; j< n ;j++){
+                ret.vals[i][j] = a * this.vals[i][j];
+            }
+        }
+        return ret;
+    }
+    /**
      * 与えられたサイズの単位行列を新たに生成して返す. 
      * @param n 生成する行列のサイズ
      * @return {@code n}×{@code} の単位行列
@@ -401,6 +417,20 @@ class MatrixMul extends CommandWithMemory<Matrix> {
         return null;
     }
 }
+class MatrixAnyMul implements Command<Matrix> {
+    public Matrix tryExec(final String [] ts, final List<String> block, final Matrix res) {
+        try {
+            if(block.size() == 1 && ts.length == 2 && "anymul".equals(ts[0])){
+                return res.anymul(Integer.parseInt(ts[1]));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("anymul 任意の整数値　で入力してください");
+            return null;
+        }
+        return null;
+    }
+}
 
 /**
  * 行列電卓を作成して動作させるクラス. 
@@ -463,6 +493,7 @@ class MatrixCalc {
         comms.add(new MatrixSub(mem));
         comms.add(new MatrixMul(mem));
         comms.add(new anynMatrix());
+        comms.add(new MatrixAnyMul());
         comms.add(new LoadStore<Matrix>(mem));
         comms.add(mem);
         // 入力は標準入力から
