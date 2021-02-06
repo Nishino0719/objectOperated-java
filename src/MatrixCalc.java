@@ -182,15 +182,28 @@ class Matrix {
             System.out.println("コマンドの詳細が知りたい場合は >>show コマンド名");
             System.out.println(commands);
             isExist = true;
-            
-            // for(String command: commands){
-            //     System.out.println(command);
-            // }
         }else{
             for(String command: commands){
                 if(command.equals(option)){
                     System.out.println(option +"コマンドは以下の通りです。");
+                    System.out.println("________________________________");
+                    try{
+                        File file = new File(option + ".txt");
+                        FileReader filereader = new FileReader(file);
+                        int ch;
+                        while((ch = filereader.read()) != -1){
+                            System.out.print((char)ch);
+                        }
+                        
+                        filereader.close();
+                    }catch(FileNotFoundException e){
+                        System.out.println(e);
+                    }catch(IOException e){
+                        System.out.println(e);
+                    }
                     isExist = true;
+                    System.out.println("");
+                    System.out.println("________________________________");
                     break;
                 }
             }
