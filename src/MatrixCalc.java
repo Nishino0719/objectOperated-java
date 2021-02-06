@@ -2,7 +2,7 @@
  * 「結果」が行列である電卓. 
  * 行列クラスを定義し, とりあえず演算としては加算や単位行列等を定義している. 
  * コンパイル & 実行：
- * javac Calculator.java IntCalc.java MemoCalc.java MatrixCalc.java ShowCommands.java
+ * javac Calculator.java IntCalc.java MemoCalc.java MatrixCalc.java
  * java MatrixCalc
  */
 
@@ -189,12 +189,12 @@ class Matrix {
      * @param n 生成する行列のサイズ
      * @return {@code n}×{@code} の任意の行列
      */
-    public static void show(ArrayList<String> commands,String option) {
+    public static void help(ArrayList<String> commands,String option) {
 
         boolean isExist = false;
         if(option.equals("all")){
             System.out.println("コマンド一覧");
-            System.out.println("コマンドの詳細が知りたい場合は >>show コマンド名");
+            System.out.println("コマンドの詳細が知りたい場合は >>help コマンド名");
             System.out.println(commands);
             isExist = true;
         }else{
@@ -203,7 +203,7 @@ class Matrix {
                     System.out.println(option +"コマンドは以下の通りです。");
                     System.out.println("________________________________");
                     try{
-                        File file = new File("show/" + option + ".txt");
+                        File file = new File("help/" + option + ".txt");
                         FileReader filereader = new FileReader(file);
                         int ch;
                         while((ch = filereader.read()) != -1){
@@ -225,7 +225,7 @@ class Matrix {
         }
         if(!isExist){
             System.out.println("そのようなコマンドは存在しません。");
-            System.out.println(">>show allでコマンドの一覧表示");
+            System.out.println(">>help allでコマンドの一覧表示");
         }
         System.out.println(">>現在の行列");
 
@@ -364,28 +364,28 @@ class anynMatrix implements Command<Matrix> {
 }
 /**
  * コマンドの一覧を[閲覧]するコマンド
- * {@code show} 
+ * {@code help} 
  * 例えば, 次のような「ブロック」を入力として受け付ける. 
  * <p><blockquote><pre>{@code
- * show
+ * help
  * }</pre></blockquote><p>
  */
-class CommandsShow implements Command<Matrix> {
-    private ArrayList<String> showCommands;
+class CommandsHelp implements Command<Matrix> {
+    private ArrayList<String> helpCommands;
     /**
      * 変数の情報を保持する {@code Arraylist} オブジェクトを受け取るコンストラクタ. 
      * @param commands 変数の情報を保持するオブジェクト. 
      */
-    CommandsShow(ArrayList<String> commands) {
-        showCommands = commands;
+    CommandsHelp(ArrayList<String> commands) {
+        helpCommands = commands;
     }
 
     public Matrix tryExec(final String [] ts, final List<String> block, final Matrix r) {
         try {
             if(block.size() == 1){
-                if(ts.length == 2 && "show".equals(ts[0])) {
+                if(ts.length == 2 && "help".equals(ts[0])) {
                     // コマンドの表示は Matrix クラスにまかせる
-                    Matrix.show(showCommands,ts[1]);
+                    Matrix.help(helpCommands,ts[1]);
                 }
             }
         } catch (Exception e) {
@@ -615,8 +615,8 @@ class MatrixCalc {
         commands.add("trans");
         comms.add(new LoadStore<Matrix>(mem));
         commands.add("store");
-        comms.add(new CommandsShow(commands));
-        commands.add("show");
+        comms.add(new CommandsHelp(commands));
+        commands.add("help");
         comms.add(mem);
         // 入力は標準入力から
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
