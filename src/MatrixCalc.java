@@ -157,7 +157,7 @@ class Matrix {
     }
     /**
      * 与えられたサイズの行列に任意の数字を新たに生成した行列を返す. 
-     * @param n 生成する行列のサイズ
+     * @param n 生成するスカラーのサイズ
      * @return {@code n}×{@code} の任意の行列
      */
     public static Matrix anyn(int n,int a) {
