@@ -152,13 +152,17 @@ class Matrix {
     Matrix div(Matrix mat) {
         Matrix invMat = new Matrix(m, n);
         Matrix ret = new Matrix(m, n);
+        if(mat.n != m){
+            System.out.println(m +"×"+n+"行列と"+mat.m+"×"+mat.n+"行列は除算することができません.");
+            return null;
+        }
         //まずは逆行列を求める.
         invMat = invMat.inv(mat);
         if(ret.m == m && ret.n == n){
             ret = invMat.mul(this);
             return ret;
         }else{
-            System.out.println(m + "×" + n+ "行列と"+ret.m+"×"+ret.n+"行列は乗算できません。");
+            System.out.println(m + "×" + n+ "行列と"+ret.m+"×"+ret.n+"行列は除算できません。");
             return null;
         }
     }
@@ -172,10 +176,6 @@ class Matrix {
     Matrix inv(Matrix mat) {
         if(mat.m != mat.n){
             System.out.println("入力された行列は正方行列でないので逆行列を持ちません.");
-            return null;
-        }
-        if(mat.n != m){
-            System.out.println(m +"×"+n+"行列と"+mat.m+"×"+mat.n+"行列は除算することができません.");
             return null;
         }
         //掃き出し法を用いる.
