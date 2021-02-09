@@ -115,7 +115,7 @@ class Matrix {
         if(mat == null || n != mat.m ) return null;
         // あとは単純な加算
         //:poop:
-        Matrix ret = new Matrix(m, n);
+        Matrix ret = new Matrix(m, mat.n);
         for(int i = 0; i < m; i++) {
             for(int k=0; k< mat.n ;k++){
                 double c = 0;
